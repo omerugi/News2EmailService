@@ -21,3 +21,7 @@ def insert_by_user_id(id, cat_list: List, db: Session):
         db.add(new_usercat)
         db.commit()
         db.refresh(new_usercat)
+
+
+def delete_by_user_id(user_id, db: Session):
+    return db.query(UserCat).filter(UserCat.user_id == user_id).delete(synchronize_session=False)
