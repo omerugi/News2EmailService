@@ -5,19 +5,11 @@ from DataBaseService.models.models import NewsCategory, UserCat
 import constants as cons
 
 
-def is_valid_categories(cat_list: List, db: Session):
-    cat_code = []
-    for i in cat_list:
-        temp = db.query(NewsCategory).filter(NewsCategory.category == i).first()
-        if not temp:
-            return None
-        cat_code.append(temp.id)
-    return cat_code
 
 
 def insert_user_categories_by_id_without_commit(user_id, cat_list: List, db: Session):
     for i in cat_list:
-        new_user_cat = UserCat(user_id=user_id, cat_id=i)
+        new_user_cat = UserCat(user=user_id, cat_id=i)
         db.add(new_user_cat)
 
 

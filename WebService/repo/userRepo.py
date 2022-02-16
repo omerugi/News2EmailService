@@ -1,13 +1,14 @@
+from datetime import datetime
+
 from sqlalchemy.orm import Session
 
 from DataBaseService.models.models import User
 from WebService.schemas.schema import UserReg
-from datetime import datetime
+import constants as cons
 
 
-def create_and_insert_new_user_without_commit(reg_form: UserReg, db: Session):
-    print(datetime.now())
-    new_user = User(email=reg_form.email, subscription_type=reg_form.subscription_type.value)
+def create_and_insert_new_user_without_commit(reg_form: UserReg, sub_type: int, last_update: datetime, db: Session):
+    new_user = User(email=reg_form.email, subscription_type=sub_type, last_update=last_update)
     db.add(new_user)
     return new_user
 

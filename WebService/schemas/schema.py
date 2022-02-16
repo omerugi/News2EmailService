@@ -1,12 +1,5 @@
-from enum import Enum
 from typing import List, Optional
 from pydantic import BaseModel
-
-
-class SubType(Enum):
-    ASAP = "ASAP"
-    Daily = "Daily"
-    Weekly = "Weekly"
 
 
 class Timer(BaseModel):
@@ -16,6 +9,6 @@ class Timer(BaseModel):
 
 class UserReg(BaseModel):
     email: str
-    subscription_type: SubType
+    subscription_type: str
     at_what_time: Optional[Timer] = []
     categories: List[str] = []
