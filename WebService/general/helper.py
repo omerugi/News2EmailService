@@ -43,6 +43,8 @@ def is_valid_email(email: str):
 
 def get_date_by_offset(day: str):
     offset = (datetime.today().day - cons.DAYS_ID[day.lower()]) % 7
+    if offset == 0:
+        return datetime.today() - timedelta(days=7)
     return datetime.today() - timedelta(days=offset)
 
 
@@ -81,5 +83,5 @@ def last_update_by_subscription(reg_form):
     if user_sub == 1:
         return user_sub, set_up_time(reg_form.at_what_time, datetime.today() - timedelta(days=1))
     if user_sub == 2:
-        return user_sub, get_date_by_offset(reg_form.at_what_time.day)
+        return user_sub, set_up_time(reg_form.at_what_time, get_date_by_offset(reg_form.at_what_time.day))
     return None

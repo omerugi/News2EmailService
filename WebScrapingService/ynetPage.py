@@ -7,27 +7,29 @@ from tqdm import tqdm
 import constants as cons
 from DataBaseService.models.models import NewsArticles
 import re
-
+from DataBaseService.db_setup import SessionLocal
 from WebScrapingService import dbFunctions
 
 
 def update_ynet_news():
-    html_test = requests.get(cons.YNET_MAIN_PAGE_URL)
-    soup = BeautifulSoup(html_test.text, "lxml")
-    jobs = soup.find_all("div", class_="slotView")
-    ynet_last_update = dbFunctions.last_update_by_page(cons.YNET_PAGE_CODE)
-    for j in tqdm(jobs):
-        article = BeautifulSoup(str(j), "lxml")
-        date_time = get_format_datetime_from_ynet(article.find("span", class_="dateView").text.replace(" ", ""))
-        if ynet_last_update and ynet_last_update.date_time > date_time:
-            break
-        url = article.find("a").get("href")
-        head_line = article.find("a").text
-        if dbFunctions.does_headline_exist(head_line):
-            continue
-        category = get_news_category(url)
-        dbFunctions.insert_news(NewsArticles(url=url, head_line=head_line, date_time=date_time, cat_id=category,
-                                             page_code=cons.YNET_PAGE_CODE))
+    with SessionLocal() as db:
+        html_test = requests.get(cons.YNET_MAIN_PAGE_URL)
+        soup = BeautifulSoup(html_test.text, "lxml")
+        jobs = soup.find_all("div", class_="slotView")
+        ynet_last_update = dbFunctions.last_update_by_page(db,cons.YNET_PAGE_CODE)
+        for j in tqdm(jobs):
+            article = BeautifulSoup(str(j), "lxml")
+            date_time = get_format_datetime_from_ynet(article.find("span", class_="dateView").text.replace(" ", ""))
+            if ynet_last_update and ynet_last_update.date_time > date_time:
+                break
+            url = article.find("a").get("href")
+            head_line = article.find("a").text
+            if dbFunctions.does_headline_exist(db,head_line):
+                continue
+            category = get_news_category(url)
+            dbFunctions.insert_news(db,NewsArticles(url=url, head_line=head_line, date_time=date_time, cat_id=category,
+                                                 page_code=cons.YNET_PAGE_CODE))
+        dbFunctions.commit(db)
 
 
 def get_format_datetime_from_ynet(details):

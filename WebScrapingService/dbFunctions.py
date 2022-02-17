@@ -5,28 +5,24 @@ from DataBaseService.models.models import NewsArticles
 from DataBaseService.db_setup import get_db
 
 
-def does_headline_exist(head_line):
-    return does_exist_by_feature(NewsArticles.head_line, head_line) is not None
+def does_headline_exist(db: Session, head_line):
+    return does_exist_by_feature(db, NewsArticles.head_line, head_line) is not None
 
 
-def does_exist_by_feature(feature, search_term):
-    db = Session(next(get_db()).bind)
+def does_exist_by_feature(db: Session, feature, search_term):
     ans = db.query(NewsArticles).filter(feature == search_term).first()
-    db.close()
     return ans
 
 
-def insert_news(new_article: NewsArticles):
-    db = Session(next(get_db()).bind)
+def insert_news(db: Session, new_article: NewsArticles):
     db.add(new_article)
-    db.commit()
-    db.close()
 
 
-def last_update_by_page(page_code: str):
-    db = Session(next(get_db()).bind)
+def last_update_by_page(db: Session, page_code: str):
     ans = db.query(NewsArticles.date_time).filter(NewsArticles.page_code == page_code).order_by(
         desc(NewsArticles.date_time)).first()
-    db.close()
     return ans
 
+
+def commit(db: Session):
+    db.commit()

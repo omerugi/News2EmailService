@@ -49,3 +49,4 @@ def delete_user(email, response: Response, db: Session = Depends(get_db)):
         return None
     helper.delete_user_from_all_db(user, db)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+

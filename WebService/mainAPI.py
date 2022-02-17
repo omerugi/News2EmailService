@@ -12,5 +12,8 @@ app.include_router(user_router)
 app.include_router(admin_router)
 
 
-if __name__ == "__main__":
+def run():
     uvicorn.run(app)
+
+if __name__ == "__main__":
+    pass

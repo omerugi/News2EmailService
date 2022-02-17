@@ -20,6 +20,7 @@ class User(Base):
     categories = relationship("UserCat", back_populates="user")
 
 
+
 class NewsCategory(Base):
     __tablename__ = "news_categories"
 
