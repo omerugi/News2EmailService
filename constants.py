@@ -44,4 +44,4 @@ PAGE_TYPES = {
 YNET_PAGE_CODE = PAGE_TYPES["ynet"]
 
 EMAIL_ADDRESS = "sightbitproject@gmail.com"
-EMAIL_PASSWORD = "13qeadzc"
+EMAIL_PASSWORD = "----"
