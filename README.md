@@ -1,4 +1,5 @@
 # News 2 Email Service
+![image](https://user-images.githubusercontent.com/57361655/155305933-71ee917e-9901-4cd9-8f6b-e1bcdd68a691.png)
 
 In this project, I've implemented an email subscription service, users signup with their email - selecting subscription type and news categories they are interested in, and get emails with relevant articles right to their in box!
 
